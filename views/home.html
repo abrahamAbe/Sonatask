@@ -1,4 +1,4 @@
-<div  ng-controller="tasksCtrl" class="container">
+<div  ng-controller="tasksCtrl" class="container" ng-show="user.authenticated">
 	
 	<div class="row">
 		<div class="col-md-10">
@@ -49,7 +49,7 @@
 			<div class="col-md-9 col-md-offset-1">
 				
 				<!--task list-->
-				<div ng-repeat="item in todos | filter:taskSearch" ng-show="item.owner == user.first_name" class=" list-group-item row">
+				<div ng-repeat="item in todos | orderByPriority | filter:user.first_name | filter:taskSearch" class=" list-group-item row">
 		
 				    <div  class="col-md-6">
 				        
