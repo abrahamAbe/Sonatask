@@ -1,0 +1,16 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+			<form ua-login id="loginFormStyle">
+				<h4 id="userName">User Name</h4>
+			    <input name="login"><br>
+			    <h4 id="loginPassword">Password</h4>
+				<input name="password" type="password"><br>
+				<button type="submit" class="btn btn-primary btn-sm" id="loginButton">Log In</button>
+				<div id="loginErrorContainer">
+					<p ng-show="error">{{ error.message }}</p>		
+				</div>
+			</form>	
+		</div>
+	</div>	
+</div>

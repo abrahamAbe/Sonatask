@@ -1,0 +1,18 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+			<form ua-signup id="signUpFormStyle">
+				<h4 id="firstName">First Name</h4>
+			    <input name="first_name"><br>
+			    <h4 id="email">E-Mail</h4>
+			    <input name="login" ua-is-email><br>
+				<h4 id="signUpPassword">Password</h4>
+				<input name="password" type="password"><br>
+				<button type="submit" class="btn btn-primary btn-sm" id="signUpButton">Create Account</button>
+				<div id="signUpErrorContainer">
+					<p ng-show="error">{{ error.message }}</p>	
+				</div>
+			</form>	
+		</div>
+	</div>	
+</div>

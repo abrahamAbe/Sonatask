@@ -1,0 +1,27 @@
+#signUpFormStyle{
+	margin-left: 50px;
+}
+
+#firstName{
+	margin-left: 38px;
+}
+
+#email{
+	margin-left: 55px;
+}
+
+#signUpPassword{
+	margin-left: 42px;
+}
+
+#signUpButton{
+	margin-top: 20px;
+	margin-left: 35px;
+}
+
+#signUpErrorContainer{
+	width: 170px;
+	margin-left: 15px;
+	margin-top: 20px;
+	color: red;
+}

@@ -1,0 +1,89 @@
+<div  ng-controller="tasksCtrl" class="container">
+	
+	<div class="row">
+		<div class="col-md-10">
+			<!-- greeting msg -->
+			<p id="homeGreeting">Hello {{ user.first_name }}, welcome to Sonatask!</p>
+		
+			<!--add task form-->
+			 <form name="submitTask">
+			
+			     <div>
+			         <input type="text"
+			                name="todoNameField"
+			                ng-model="todoName"
+			                placeholder="Add new task"
+			                class="form-control"
+			                ng-keyup="($event.keyCode == 13) ? addItem() : return"
+			                id="newTaskTextField"
+			                />
+			
+			         <button ng-click="addItem()"
+			                         ng-hide="myForm.todoNameField.$invalid"
+			                         class="btn btn-primary btn-sm" type="button"
+			                         >Save Task</button>
+			     	</div>
+		
+			 </form>	
+		</div>
+	</div>
+	
+	<hr>
+	
+	<!-- search for task -->
+	<div class="row">
+		<div class="col-md-10">
+			
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+				</span>
+				<input type="search" class="form-control" placeholder="Search" ng-model="taskSearch" id="taskSearchText">
+			</div>
+			
+		</div>
+	</div>
+	
+	<div id="issueContainer">
+		<div class="row">
+			<div class="col-md-9 col-md-offset-1">
+				
+				<!--task list-->
+				<div ng-repeat="item in todos | filter:taskSearch" ng-show="item.owner == user.first_name" class=" list-group-item row">
+		
+				    <div  class="col-md-6">
+				        
+				        <!--completed icon-->
+				         <span class="glyphicon glyphicon-thumbs-up"
+				               ng-show="item.completed"> 
+				         </span>
+			
+				        <!--task label-->
+				        <span editable-text="item.name" id="taskTextStyle">{{item.name}}</span>
+			
+			    	</div>
+			
+				    <div  class="col-md-6">
+				    	
+				    	<a class="btn btn-default btn-sm" ng-click="saveChanges(item)">
+			            <i class="icon-remove-sign"></i>Save changes
+			        	</a>
+				    	
+						<!-- change status -->
+				        <a class="btn btn-default btn-sm" ng-click="changeStatus(item)">
+				            <i class="icon-remove-sign"></i>Change Status
+				        </a>
+				        
+				        <!--Delete Todo button-->
+				        <a class="btn btn-danger btn-sm" ng-click="removeItem($index, item, $event)">
+				            <i class="icon-remove-sign"></i>Delete
+				        </a>
+				        
+				    </div>
+				    
+				 </div>	
+			</div>
+		</div>	
+	</div>
+	 
+</div>
