@@ -3,8 +3,10 @@ var app = angular.module('sonatask', [
     'ngRoute',
 	'sonatask.controllers',
 	'UserApp',
-	'firebase',
-	'xeditable'	
+	'xeditable',
+	'ngResource',
+	'720kb.datepicker',
+	'ui.sortable'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {

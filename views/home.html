@@ -1,25 +1,25 @@
-<div  ng-controller="tasksCtrl" class="container" ng-show="user.authenticated">
+<div ng-controller="tasksController" class="container" ng-show="user.authenticated">
 	
 	<div class="row">
 		<div class="col-md-10">
+			
 			<!-- greeting msg -->
-			<p id="homeGreeting">Hello {{ user.first_name }}, welcome to Sonatask!</p>
+			<p id="homeGreeting">Hello {{user.first_name}}, welcome to Sonatask!</p>
 		
 			<!--add task form-->
 			 <form name="submitTask">
 			
 			     <div>
 			         <input type="text"
-			                name="todoNameField"
-			                ng-model="todoName"
+			                name="taskTextField"
+			                ng-model="newTaskText"
 			                placeholder="Add new task"
 			                class="form-control"
-			                ng-keyup="($event.keyCode == 13) ? addItem() : return"
+			                ng-keyup="($event.keyCode == 13) ? addTask() : return"
 			                id="newTaskTextField"
 			                />
 			
-			         <button ng-click="addItem()"
-			                         ng-hide="myForm.todoNameField.$invalid"
+			         <button ng-click="addTask()"
 			                         class="btn btn-primary btn-sm" type="button"
 			                         >Save Task</button>
 			     	</div>
@@ -46,44 +46,77 @@
 	
 	<div id="issueContainer">
 		<div class="row">
-			<div class="col-md-9 col-md-offset-1">
-				
-				<!--task list-->
-				<div ng-repeat="item in todos | orderByPriority | filter:user.first_name | filter:taskSearch" class=" list-group-item row">
+			<div class="col-md-9 col-md-offset-1" ui-sortable ng-model="tasks">
+			    
+			    <!--task list-->
+				<div ng-repeat="task in tasks | filter:taskSearch" class=" list-group-item row">
 		
-				    <div  class="col-md-6">
+				    <!-- if expiration date different from current date -->
+				    <div  class="col-md-5" ng-if="checkCurrentDate(task) == 0">
 				        
-				        <!--completed icon-->
-				         <span class="glyphicon glyphicon-thumbs-up"
-				               ng-show="item.completed"> 
-				         </span>
+				        <!-- completed task checkbox --> <!-- if task is not done -->
+				        <input type="checkbox" ng-model="task.done" ng-click="changeStatus(task)" ng-if="task.completed == 0" ng-init="task.done=false">
+				        
+				        <!-- if task is done -->
+				        <input type="checkbox" ng-model="task.done" ng-click="changeStatus(task)" ng-if="task.completed == 1" ng-init="task.done=true">
 			
-				        <!--task label-->
-				        <span editable-text="item.name" id="taskTextStyle">{{item.name}}</span>
+				        <!--task content--> <!-- if task is done -->
+				        <span editable-text="task.content" id="taskDoneStyle" ng-if="task.completed == 1" ng-click="showSaveChanges()">{{task.content}} </span>
+				        
+				        <!-- if task is not done -->
+				        <span editable-text="task.content" id="taskUndoneStyle" ng-if="task.completed == 0" ng-click="showSaveChanges()">{{task.content}} </span>
 			
 			    	</div>
-			
-				    <div  class="col-md-6">
-				    	
-				    	<a class="btn btn-default btn-sm" ng-click="saveChanges(item)">
-			            <i class="icon-remove-sign"></i>Save changes
-			        	</a>
-				    	
-						<!-- change status -->
-				        <a class="btn btn-default btn-sm" ng-click="changeStatus(item)">
-				            <i class="icon-remove-sign"></i>Change Status
-				        </a>
+			    	
+			    	  <!-- if expiration date equal to current date -->
+			    	  <div  class="col-md-5 unclickableArea" ng-if="checkCurrentDate(task) == 1">
 				        
-				        <!--Delete Todo button-->
-				        <a class="btn btn-danger btn-sm" ng-click="removeItem($index, item, $event)">
-				            <i class="icon-remove-sign"></i>Delete
-				        </a>
+				        <!-- completed task checkbox --> <!-- if task is not done -->
+				        <input type="checkbox" ng-model="task.done" ng-click="changeStatus(task)" ng-if="task.completed == 0" ng-init="task.done=false">
+				        
+				        <!-- if task is done -->
+				        <input type="checkbox" ng-model="task.done" ng-click="changeStatus(task)" ng-if="task.completed == 1" ng-init="task.done=true">
+			
+				        <!--task content--> <!-- if task is done -->
+				        <span editable-text="task.content" id="taskDoneStyle" ng-if="task.completed == 1">{{task.content}} </span>
+				        
+				        <!-- if task is not done -->
+				        <span editable-text="task.content" id="taskUndoneStyle" ng-if="task.completed == 0">{{task.content}} </span>
+			
+			    	</div>
+			    	
+			    	<div class="col-md-4">
+			    		
+			    		<!-- expiration date --> <!-- if expiration date different from current date -->
+				        <label id="expirationDateLabelStyle"  ng-if="checkCurrentDate(task) == 0">Due date</label>
+				        
+			    		<!-- if expiration date equal to current date -->
+				        <label id="expirationDateLabelStyle"  ng-if="checkCurrentDate(task) == 1" style="color:red">Task has expired, change due date.</label>
+				        
+				        <!-- expiration date picker -->
+				        <datepicker date-format="{{'MM-dd-yyyy'}}" date-min-limit="{{currentDate}}">
+						  <input ng-model="task.expirationDate" type="text" id="expirationDatePickerStyle" ng-click="showSaveChanges()"/>
+						</datepicker>
+						
+			    	</div>
+			
+				    <div  class="col-md-3">
+			        	
+			        	<!-- save changes button -->
+			        	<button type="button" class="btn btn-default btn-sm" ng-click="saveChanges(task)" ng-show="showSaveButton == true">Save Changes</button>
+				        
+				        <!-- delete task button -->
+				        <button type="button" class="btn btn-danger btn-sm" ng-click="deleteTask(task)">Delete</button>
 				        
 				    </div>
 				    
 				 </div>	
+				
 			</div>
 		</div>	
 	</div>
-	 
+	
+	<ul ui-sortable="sortableOptions" ng-model="tasks">
+  <li ng-repeat="task in tasks">{{ task }}</li>
+</ul>
 </div>

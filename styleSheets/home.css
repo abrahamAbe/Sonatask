@@ -17,8 +17,26 @@
 	margin-bottom: 40px;
 }
 
-#taskTextStyle{
-	text-decoration: none;
-	color: black;
-	font-weight: bold;	
+#taskDoneStyle{
+	text-decoration: line-through;
+	color: gray;
+	font-weight: normal;	
 }
+
+#taskUndoneStyle{
+	color: black;
+	font-weight: bold;
+}
+
+#expirationDateLabelStyle{
+	
+}
+
+#expirationDatePickerStyle{
+	border: none;
+}
+
+.unclickableArea{
+	pointer-events: none;
+}
+
