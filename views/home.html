@@ -1,10 +1,15 @@
 <div ng-controller="tasksController" class="container" ng-show="user.authenticated">
 	
-	<div class="row">
-		<div class="col-md-10">
+	<div class="row" id="addTaskContainer">
+		
+		<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
 			
 			<!-- greeting msg -->
 			<p id="homeGreeting">Hello {{user.first_name}}, welcome to Sonatask!</p>
+			
+		</div>
+		
+		<div class="col-md-6 col-md-offset-4 col-sm-7 col-sm-offset-3">
 		
 			<!--add task form-->
 			 <form name="submitTask">
@@ -13,7 +18,7 @@
 			         <input type="text"
 			                name="taskTextField"
 			                ng-model="newTaskText"
-			                placeholder="Add new task"
+			                placeholder="Add Task"
 			                class="form-control"
 			                ng-keyup="($event.keyCode == 13) ? addTask() : return"
 			                id="newTaskTextField"
@@ -23,53 +28,39 @@
 			                         class="btn btn-primary btn-sm" type="button"
 			                         >Save Task</button>
 			     	</div>
+			     	
+			     	<div class="col-md-8 col-md-offset-0 col-sm-10 col-sm-offset-0" id="emptyFIeldErrorContainer">
+			
+						<p id="errorMsg">Content cannot be empty, please type a task name!</p>
+					
+				</div>
 		
 			 </form>	
 		</div>
-	</div>
-	
-	<hr>
-	
-	<!-- search for task -->
-	<div class="row">
-		<div class="col-md-10">
 			
-			<div class="input-group">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-				</span>
-				<input type="search" class="form-control" placeholder="Search" ng-model="taskSearch" id="taskSearchText">
-			</div>
-			
-		</div>
 	</div>
-	
+
 	<div id="issueContainer">
 		<div class="row">
+			
+			<!-- search for task -->
+			<div class="col-md-9 col-md-offset-1 " id="searchTaskContainer">
+			
+				<div class="input-group" id="searchTaskVisibility">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+					</span>
+					<input type="search" class="form-control" placeholder="Search Task" ng-model="taskSearch" id="taskSearchText">
+				</div>
+			
+			</div>
 			<div class="col-md-9 col-md-offset-1" ui-sortable ng-model="tasks">
 			    
 			    <!--task list-->
-				<div ng-repeat="task in tasks | filter:taskSearch" class=" list-group-item row">
+				<div ng-repeat="task in tasks | filter:taskSearch" class=" list-group-item row" ng-show="task.owner == user.first_name">
 		
 				    <!-- if expiration date different from current date -->
 				    <div  class="col-md-5" ng-if="checkCurrentDate(task) == 0">
-				        
-				        <!-- completed task checkbox --> <!-- if task is not done -->
-				        <input type="checkbox" ng-model="task.done" ng-click="changeStatus(task)" ng-if="task.completed == 0" ng-init="task.done=false">
-				        
-				        <!-- if task is done -->
-				        <input type="checkbox" ng-model="task.done" ng-click="changeStatus(task)" ng-if="task.completed == 1" ng-init="task.done=true">
-			
-				        <!--task content--> <!-- if task is done -->
-				        <span editable-text="task.content" id="taskDoneStyle" ng-if="task.completed == 1" ng-click="showSaveChanges()">{{task.content}} </span>
-				        
-				        <!-- if task is not done -->
-				        <span editable-text="task.content" id="taskUndoneStyle" ng-if="task.completed == 0" ng-click="showSaveChanges()">{{task.content}} </span>
-			
-			    	</div>
-			    	
-			    	  <!-- if expiration date equal to current date -->
-			    	  <div  class="col-md-5 unclickableArea" ng-if="checkCurrentDate(task) == 1">
 				        
 				        <!-- completed task checkbox --> <!-- if task is not done -->
 				        <input type="checkbox" ng-model="task.done" ng-click="changeStatus(task)" ng-if="task.completed == 0" ng-init="task.done=false">
@@ -85,17 +76,34 @@
 			
 			    	</div>
 			    	
+			    	  <!-- if expiration date equal to current date -->
+			    	  <div  class="col-md-5 unclickableArea" ng-if="checkCurrentDate(task) == 1">
+				        
+				        <!-- completed task checkbox --> <!-- if task is not done -->
+				        <input type="checkbox" ng-model="task.done" ng-click="changeStatus(task)" ng-if="task.completed == 0" ng-init="task.done=false" id="checkboxStyle">
+				        
+				        <!-- if task is done -->
+				        <input type="checkbox" ng-model="task.done" ng-click="changeStatus(task)" ng-if="task.completed == 1" ng-init="task.done=true" id="checkboxStyle">
+			
+				        <!--task content--> <!-- if task is done -->
+				        <span editable-text="task.content" id="taskDoneStyle" ng-if="task.completed == 1">{{task.content}} </span>
+				        
+				        <!-- if task is not done -->
+				        <span editable-text="task.content" id="taskUndoneStyle" ng-if="task.completed == 0">{{task.content}} </span>
+			
+			    	</div>
+			    	
 			    	<div class="col-md-4">
 			    		
 			    		<!-- expiration date --> <!-- if expiration date different from current date -->
 				        <label id="expirationDateLabelStyle"  ng-if="checkCurrentDate(task) == 0">Due date</label>
 				        
 			    		<!-- if expiration date equal to current date -->
-				        <label id="expirationDateLabelStyle"  ng-if="checkCurrentDate(task) == 1" style="color:red">Task has expired, change due date.</label>
+				        <label ng-if="checkCurrentDate(task) == 1" id="taskExpiredStyle">Task has expired, change due date</label>
 				        
 				        <!-- expiration date picker -->
 				        <datepicker date-format="{{'MM-dd-yyyy'}}" date-min-limit="{{currentDate}}">
-						  <input ng-model="task.expirationDate" type="text" id="expirationDatePickerStyle" ng-click="showSaveChanges()"/>
+						  <input ng-model="task.expirationDate" type="text" id="expirationDatePickerStyle"/>
 						</datepicker>
 						
 			    	</div>
@@ -103,10 +111,10 @@
 				    <div  class="col-md-3">
 			        	
 			        	<!-- save changes button -->
-			        	<button type="button" class="btn btn-default btn-sm" ng-click="saveChanges(task)" ng-show="showSaveButton == true">Save Changes</button>
+			        	<button type="button" class="btn btn-default btn-sm" ng-click="saveChanges(task)" id="saveChangesButtonStyle">Save Changes</button>
 				        
 				        <!-- delete task button -->
-				        <button type="button" class="btn btn-danger btn-sm" ng-click="deleteTask(task)">Delete</button>
+				        <button type="button" class="btn btn-danger btn-sm" ng-click="deleteTask(task)" id="deleteTaskButtonStyle">Delete</button>
 				        
 				    </div>
 				    
@@ -116,7 +124,4 @@
 		</div>	
 	</div>
 	
-	<ul ui-sortable="sortableOptions" ng-model="tasks">
-  <li ng-repeat="task in tasks">{{ task }}</li>
-</ul>
 </div>

@@ -1,6 +1,26 @@
+#addTaskContainer{
+	margin-bottom: 30px;
+}
+
 #homeGreeting{
 	font-size: 130%;
-	font-weight: bold;
+	color: #5B6567;
+	text-align: center;
+}
+
+#searchTaskContainer{
+	margin-top: 0;
+	margin-bottom: 50px;
+}
+
+#emptyFIeldErrorContainer{
+	margin-bottom: 0;	
+}
+
+#errorMsg{
+	margin-top: 10px;
+	color: red;
+	visibility: hidden;
 }
 
 #newTaskTextField{
@@ -9,7 +29,7 @@
 }
 
 #taskSearchText{
-	width: 400px;
+	width: 300px;
 }
 
 #issueContainer{
@@ -21,15 +41,18 @@
 	text-decoration: line-through;
 	color: gray;
 	font-weight: normal;	
+	width: 20px;
 }
 
 #taskUndoneStyle{
 	color: black;
 	font-weight: bold;
+	width: 20px;
 }
 
-#expirationDateLabelStyle{
-	
+#taskExpiredStyle{
+	font-weight: normal;
+	color: red;
 }
 
 #expirationDatePickerStyle{
@@ -38,5 +61,13 @@
 
 .unclickableArea{
 	pointer-events: none;
+}
+
+#saveChangesButtonStyle{
+	margin-top: 8px;
+}
+
+#deleteTaskButtonStyle{
+	margin-top: 8px;
 }
 

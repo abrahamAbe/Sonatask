@@ -1,5 +1,5 @@
 #loginFormStyle{
-	margin-left: 50px;
+	margin-left: 60px;
 }
 
 #userName{
@@ -17,9 +17,9 @@
 
 #loginErrorContainer{
 	width: 150px;
-	margin-left: 15px;
 	color: red;
 	margin-left: 15px;
 	margin-top: 20px;
+	text-align: center;
 }
 

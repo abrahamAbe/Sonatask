@@ -6,7 +6,7 @@ var app = angular.module('sonatask', [
 	'xeditable',
 	'ngResource',
 	'720kb.datepicker',
-	'ui.sortable'
+	'ui.sortable',
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
